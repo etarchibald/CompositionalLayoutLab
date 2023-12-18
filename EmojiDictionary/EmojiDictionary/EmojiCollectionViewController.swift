@@ -104,9 +104,10 @@ class EmojiCollectionViewController: UICollectionViewController {
         sections.removeAll()
         
         let goruped = Dictionary(grouping: emojis, by: { $0.sectionTitle })
-        for (title, emojis) in goruped.sorted(by:  {$0.0 < $1.0 }) {
+        for (title, emojis) in goruped.sorted(by: { $0.0 < $1.0 }) {
             sections.append(Section(title: title, emojis: emojis.sorted(by: { $0.name < $1.name })))
         }
+        print(sections)
     }
     
     @IBAction func switchLayouts(sender: UIBarButtonItem) {
@@ -130,10 +131,11 @@ class EmojiCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let identifier = activeLayout == .grid ? reuseIdentifier : columnReuseIdentifier
+        print(identifier)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! EmojiCollectionViewCell
     
         //Step 2: Fetch model object to display
-        let emoji = emojis[indexPath.item]
+        let emoji = sections[indexPath.section].emojis[indexPath.item]
 
         //Step 3: Configure cell
         cell.update(with: emoji)
